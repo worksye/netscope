@@ -1,0 +1,6 @@
+{
+  "name": "NetScope",
+  "version": "1.0.0",
+  "description": "Bilingual corporate IP and network engineering dashboard",
+  "entry": "index.html"
+}

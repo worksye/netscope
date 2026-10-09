@@ -1,0 +1,155 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="NetScope — داشبورد مهندسی شبکه و اطلاعات IP">
+  <meta name="theme-color" content="#f5f7fa">
+  <title>NetScope | داشبورد شبکه</title>
+  <link rel="icon" href="./assets/logo.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="./css/style.css">
+  <link rel="stylesheet" href="./css/components.css">
+  <link rel="stylesheet" href="./css/responsive.css">
+  <script type="module" src="./js/app.js"></script>
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar" id="sidebar" aria-label="ناوبری اصلی">
+      <a class="brand" href="#overview" aria-label="NetScope home">
+        <img src="./assets/logo.svg" alt="" width="34" height="34">
+        <span><strong>NetScope</strong><small data-i18n="brandSubtitle">IP & Network Intelligence</small></span>
+      </a>
+      <div class="nav-caption" data-i18n="workspace">محیط کار</div>
+      <nav class="nav-list">
+        <a href="#overview" class="nav-link active" data-route="overview"><span class="nav-icon">▦</span><span data-i18n="navOverview">نمای کلی</span></a>
+        <a href="#my-ip" class="nav-link" data-route="my-ip"><span class="nav-icon">◎</span><span data-i18n="navMyIp">IP من</span></a>
+        <a href="#lookup" class="nav-link" data-route="lookup"><span class="nav-icon">⌕</span><span data-i18n="navLookup">جست‌وجوی IP</span></a>
+        <a href="#diagnostics" class="nav-link" data-route="diagnostics"><span class="nav-icon">⌁</span><span data-i18n="navDiagnostics">عیب‌یابی شبکه</span></a>
+        <a href="#subnet" class="nav-link" data-route="subnet"><span class="nav-icon">▤</span><span data-i18n="navSubnet">محاسبه‌گر Subnet</span></a>
+        <a href="#history" class="nav-link" data-route="history"><span class="nav-icon">◷</span><span data-i18n="navHistory">تاریخچه</span></a>
+        <a href="#settings" class="nav-link" data-route="settings"><span class="nav-icon">⚙</span><span data-i18n="navSettings">تنظیمات</span></a>
+      </nav>
+      <div class="sidebar-footer">
+        <span class="status-dot"></span>
+        <span data-i18n="staticHosting">میزبانی استاتیک</span>
+        <span class="version">v1.0.0</span>
+      </div>
+    </aside>
+
+    <main class="main-area">
+      <header class="topbar">
+        <button class="icon-button mobile-menu" id="menuToggle" aria-label="Open navigation" aria-expanded="false">☰</button>
+        <div class="breadcrumbs"><span data-i18n="breadcrumbHome">NetScope</span><span class="crumb-sep">/</span><strong id="pageTitle">نمای کلی</strong></div>
+        <div class="top-actions">
+          <span class="top-status"><i class="status-dot" id="onlineDot"></i><span id="onlineLabel">در حال بررسی</span></span>
+          <button class="button button-secondary button-small" id="languageToggle" type="button">EN</button>
+          <button class="button button-primary button-small" id="globalRefresh" type="button"><span class="refresh-icon">↻</span><span data-i18n="refresh">به‌روزرسانی</span></button>
+        </div>
+      </header>
+
+      <div class="content-wrap">
+        <section class="page-view active" id="page-overview">
+          <div class="page-heading">
+            <div><p class="eyebrow" data-i18n="overviewEyebrow">وضعیت و مشاهده</p><h1 data-i18n="overviewTitle">نمای کلی شبکه</h1><p class="muted" data-i18n="overviewDesc">نمایی سریع از IP عمومی و اطلاعات اتصال قابل مشاهده در مرورگر.</p></div>
+            <div class="updated-label"><span data-i18n="lastUpdated">آخرین بررسی</span><strong id="lastUpdated">—</strong></div>
+          </div>
+
+          <div class="summary-grid">
+            <article class="summary-card">
+              <div class="card-label"><span data-i18n="publicIpv4">IP عمومی IPv4</span><span class="mini-icon">IP4</span></div>
+              <div class="metric-value mono" id="overviewIpv4">در حال دریافت…</div>
+              <div class="card-foot"><span id="ipv4Status" class="status-badge neutral">در حال بررسی</span><button class="text-button copy-control" data-copy-target="overviewIpv4" data-i18n="copy">کپی</button></div>
+            </article>
+            <article class="summary-card">
+              <div class="card-label"><span data-i18n="publicIpv6">IP عمومی IPv6</span><span class="mini-icon">IP6</span></div>
+              <div class="metric-value mono" id="overviewIpv6">—</div>
+              <div class="card-foot"><span id="ipv6Status" class="status-badge neutral">بررسی نشده</span><button class="text-button copy-control" data-copy-target="overviewIpv6" data-i18n="copy">کپی</button></div>
+            </article>
+            <article class="summary-card">
+              <div class="card-label"><span data-i18n="connection">اتصال مرورگر</span><span class="mini-icon">NET</span></div>
+              <div class="metric-value" id="overviewConnection">—</div>
+              <div class="card-foot"><span data-i18n="browserReported">وضعیت گزارش‌شده مرورگر</span><span class="status-dot" id="connectionDot"></span></div>
+            </article>
+            <article class="summary-card">
+              <div class="card-label"><span data-i18n="provider">ارائه‌دهنده اینترنت</span><span class="mini-icon">ISP</span></div>
+              <div class="metric-value metric-text" id="overviewIsp">—</div>
+              <div class="card-foot"><span data-i18n="fromMetadata">بر اساس داده‌های IP</span><span class="muted small" id="overviewAsn">—</span></div>
+            </article>
+          </div>
+
+          <div class="content-grid">
+            <section class="panel panel-wide">
+              <div class="panel-header"><div><h2 data-i18n="networkDetails">جزئیات شبکه</h2><p data-i18n="networkDetailsDesc">اطلاعات ارائه‌شده توسط سرویس اطلاعات IP</p></div><button class="button button-secondary button-small" id="exportOverview" data-i18n="exportJson">خروجی JSON</button></div>
+              <div class="table-wrap"><table class="data-table"><tbody id="overviewDetails"></tbody></table></div>
+            </section>
+            <section class="panel">
+              <div class="panel-header"><div><h2 data-i18n="diagnosticsSnapshot">خلاصه عیب‌یابی</h2><p data-i18n="diagnosticsSnapshotDesc">بررسی‌های قابل انجام در مرورگر</p></div><a class="text-button" href="#diagnostics" data-i18n="viewAll">مشاهده همه</a></div>
+              <div class="diagnostic-list" id="overviewDiagnostics"></div>
+              <div class="notice notice-info"><span class="notice-icon">i</span><p data-i18n="diagnosticsDisclaimer">وضعیت آنلاین مرورگر به‌تنهایی دسترسی کامل به اینترنت را اثبات نمی‌کند.</p></div>
+            </section>
+          </div>
+          <section class="panel activity-panel">
+            <div class="panel-header"><div><h2 data-i18n="recentActivity">فعالیت‌های اخیر</h2><p data-i18n="recentActivityDesc">رویدادهای ثبت‌شده در همین مرورگر</p></div><a class="text-button" href="#history" data-i18n="viewHistory">مشاهده تاریخچه</a></div>
+            <div id="recentEvents" class="activity-list"></div>
+          </section>
+        </section>
+
+        <section class="page-view" id="page-my-ip">
+          <div class="page-heading"><div><p class="eyebrow" data-i18n="myIpEyebrow">اطلاعات اتصال فعلی</p><h1 data-i18n="myIpTitle">IP من</h1><p class="muted" data-i18n="myIpDesc">آدرس عمومی مشاهده‌شده توسط سرویس و فراداده‌های مرتبط.</p></div><button class="button button-primary" id="refreshMyIp" data-i18n="refresh">به‌روزرسانی</button></div>
+          <section class="panel ip-hero">
+            <div><div class="card-label" data-i18n="detectedPublicIp">IP عمومی شناسایی‌شده</div><div class="hero-ip mono" id="myIpValue">—</div><div class="inline-actions"><button class="button button-primary" id="copyMyIp" data-i18n="copyIp">کپی IP</button><button class="button button-secondary" id="exportMyIp" data-i18n="exportJson">خروجی JSON</button></div></div>
+            <div class="hero-meta"><div><span data-i18n="ipVersion">نسخه IP</span><strong id="myIpVersion">—</strong></div><div><span data-i18n="classification">طبقه‌بندی</span><strong id="myIpClass">—</strong></div><div><span data-i18n="dataSource">منبع داده</span><strong id="myIpSource">—</strong></div></div>
+          </section>
+          <section class="panel"><div class="panel-header"><div><h2 data-i18n="fullDetails">اطلاعات کامل</h2><p data-i18n="providerNote">مقادیر مکانی تقریبی هستند و ممکن است دقیق نباشند.</p></div></div><div class="table-wrap"><table class="data-table"><tbody id="myIpDetails"></tbody></table></div></section>
+        </section>
+
+        <section class="page-view" id="page-lookup">
+          <div class="page-heading"><div><p class="eyebrow" data-i18n="lookupEyebrow">جست‌وجوی اطلاعات عمومی</p><h1 data-i18n="lookupTitle">جست‌وجوی IP</h1><p class="muted" data-i18n="lookupDesc">یک IPv4 یا IPv6 وارد کنید تا اطلاعات عمومی موجود بررسی شود.</p></div></div>
+          <section class="panel">
+            <form id="lookupForm" class="lookup-form">
+              <label for="lookupInput" data-i18n="ipAddress">آدرس IP</label>
+              <div class="lookup-controls"><input id="lookupInput" name="ip" type="text" inputmode="url" autocomplete="off" spellcheck="false" placeholder="مثلاً 8.8.8.8 یا 2001:4860:4860::8888" aria-describedby="lookupHelp lookupError"><button class="button button-primary" type="submit" id="lookupSubmit" data-i18n="search">جست‌وجو</button><button class="button button-secondary" type="button" id="lookupClear" data-i18n="clear">پاک‌کردن</button></div>
+              <div id="lookupHelp" class="field-help" data-i18n="lookupHelp">برای بررسی IP فعلی، فیلد را خالی بگذارید یا از صفحه «IP من» استفاده کنید.</div><div id="lookupError" class="field-error" role="alert"></div>
+            </form>
+          </section>
+          <section class="panel hidden" id="lookupResultPanel"><div class="panel-header"><div><h2 data-i18n="lookupResult">نتیجه جست‌وجو</h2><p id="lookupResultSubtitle">—</p></div><button class="button button-secondary button-small" id="exportLookup" data-i18n="exportJson">خروجی JSON</button></div><div class="table-wrap"><table class="data-table"><tbody id="lookupDetails"></tbody></table></div></section>
+        </section>
+
+        <section class="page-view" id="page-diagnostics">
+          <div class="page-heading"><div><p class="eyebrow" data-i18n="diagnosticsEyebrow">بررسی‌های مرورگر</p><h1 data-i18n="diagnosticsTitle">عیب‌یابی شبکه</h1><p class="muted" data-i18n="diagnosticsDesc">تست‌ها تنها مواردی را گزارش می‌کنند که از محیط فعلی قابل بررسی باشند.</p></div><button class="button button-primary" id="runDiagnostics" data-i18n="runChecks">اجرای بررسی‌ها</button></div>
+          <div class="diagnostics-grid" id="diagnosticsGrid"></div>
+          <div class="notice notice-warning"><span class="notice-icon">!</span><p data-i18n="diagnosticsLimit">این ابزار جایگزین ابزارهای تخصصی packet capture، تست DNS کنترل‌شده یا ممیزی امنیتی نیست. VPN و پراکسی ممکن است با قطعیت از سمت مرورگر تشخیص داده نشوند.</p></div>
+        </section>
+
+        <section class="page-view" id="page-subnet">
+          <div class="page-heading"><div><p class="eyebrow" data-i18n="subnetEyebrow">ابزار مهندسی شبکه</p><h1 data-i18n="subnetTitle">محاسبه‌گر Subnet IPv4</h1><p class="muted" data-i18n="subnetDesc">محاسبه شبکه، ماسک، Broadcast و محدوده آدرس‌ها از روی IPv4/CIDR.</p></div></div>
+          <section class="panel"><form id="subnetForm" class="subnet-form"><div class="form-field"><label for="subnetIp" data-i18n="ipCidr">IP / CIDR</label><input id="subnetIp" value="192.168.1.10/24" placeholder="192.168.1.10/24" required></div><button class="button button-primary" type="submit" data-i18n="calculate">محاسبه</button></form><div class="field-error" id="subnetError" role="alert"></div><div class="subnet-results" id="subnetResults"></div></section>
+          <div class="notice notice-info"><span class="notice-icon">i</span><p data-i18n="subnetNote">برای /31 و /32 تعداد میزبان‌ها بر اساس قواعد و کاربردهای ویژه شبکه تفسیر می‌شود. این ابزار محاسبات IPv4 را انجام می‌دهد؛ IPv6 دارای Broadcast نیست.</p></div>
+        </section>
+
+        <section class="page-view" id="page-history">
+          <div class="page-heading"><div><p class="eyebrow" data-i18n="historyEyebrow">ذخیره‌سازی محلی</p><h1 data-i18n="historyTitle">تاریخچه</h1><p class="muted" data-i18n="historyDesc">جست‌وجوهای انجام‌شده روی همین مرورگر ذخیره می‌شوند.</p></div><div class="inline-actions"><button class="button button-secondary" id="exportHistory" data-i18n="exportJson">خروجی JSON</button><button class="button button-danger" id="clearHistory" data-i18n="clearHistory">پاک‌کردن تاریخچه</button></div></div>
+          <section class="panel"><div id="historyList" class="history-list"></div></section>
+        </section>
+
+        <section class="page-view" id="page-settings">
+          <div class="page-heading"><div><p class="eyebrow" data-i18n="settingsEyebrow">تنظیمات برنامه</p><h1 data-i18n="settingsTitle">تنظیمات</h1><p class="muted" data-i18n="settingsDesc">تنظیمات و داده‌های NetScope روی دستگاه شما نگهداری می‌شوند.</p></div></div>
+          <section class="panel settings-panel">
+            <div class="setting-row"><div><strong data-i18n="languageSetting">زبان رابط کاربری</strong><p data-i18n="languageSettingDesc">انتخاب زبان و جهت نوشتار</p></div><select id="languageSelect"><option value="fa">فارسی</option><option value="en">English</option></select></div>
+            <div class="setting-row"><div><strong data-i18n="themeSetting">تم ظاهری</strong><p data-i18n="themeSettingDesc">نسخه روشن شرکتی یا تم تیره</p></div><select id="themeSelect"><option value="light">روشن</option><option value="dark">تیره</option></select></div>
+            <div class="setting-row"><div><strong data-i18n="autoRefresh">به‌روزرسانی خودکار</strong><p data-i18n="autoRefreshDesc">دریافت دوره‌ای اطلاعات IP فعلی</p></div><label class="switch"><input type="checkbox" id="autoRefreshToggle"><span class="switch-slider"></span></label></div>
+            <div class="setting-row"><div><strong data-i18n="refreshInterval">فاصله به‌روزرسانی</strong><p data-i18n="refreshIntervalDesc">حداقل ۱ دقیقه برای جلوگیری از درخواست‌های پرتکرار</p></div><select id="refreshInterval"><option value="60000">۱ دقیقه</option><option value="300000" selected>۵ دقیقه</option><option value="900000">۱۵ دقیقه</option></select></div>
+            <div class="setting-row"><div><strong data-i18n="historyLimit">حد تاریخچه</strong><p data-i18n="historyLimitDesc">حداکثر تعداد رکوردهای محلی</p></div><select id="historyLimit"><option value="25">۲۵</option><option value="50" selected>۵۰</option><option value="100">۱۰۰</option></select></div>
+            <div class="setting-row"><div><strong data-i18n="privacySetting">حریم خصوصی</strong><p data-i18n="privacySettingDesc">تاریخچه فقط در localStorage مرورگر نگهداری می‌شود. برای دریافت اطلاعات IP درخواست به سرویس‌های ثالث ارسال می‌شود.</p></div><button class="button button-secondary" id="clearCache" data-i18n="clearCache">پاک‌کردن داده محلی</button></div>
+            <div class="setting-actions"><button class="button button-primary" id="saveSettings" data-i18n="saveSettings">ذخیره تنظیمات</button><button class="button button-secondary" id="resetSettings" data-i18n="resetSettings">بازنشانی</button></div>
+          </section>
+          <section class="panel"><div class="panel-header"><div><h2 data-i18n="dataSources">منابع داده و محدودیت‌ها</h2><p data-i18n="dataSourcesDesc">سرویس‌های ثالث ممکن است محدودیت نرخ درخواست یا تغییر سیاست داشته باشند.</p></div></div><ul class="source-list"><li><strong>ipify</strong> — <span data-i18n="sourceIpify">دریافت IP عمومی مشاهده‌شده</span> · <a href="https://www.ipify.org/" target="_blank" rel="noreferrer">ipify.org</a></li><li><strong>ipapi.co</strong> — <span data-i18n="sourceIpapi">فراداده و مکان تقریبی IP</span> · <a href="https://ipapi.co/" target="_blank" rel="noreferrer">ipapi.co</a></li><li><strong>IANA / RFC</strong> — <span data-i18n="sourceIana">مراجع طبقه‌بندی آدرس‌ها</span></li></ul></section>
+        </section>
+
+        <footer class="app-footer"><span>NetScope · v1.0.0</span><span data-i18n="footerText">ابزار اطلاعات شبکه در مرورگر · داده‌های مکانی تقریبی هستند</span></footer>
+      </div>
+    </main>
+  </div>
+  <div id="toastRegion" class="toast-region" aria-live="polite" aria-atomic="true"></div>
+</body>
+</html>
